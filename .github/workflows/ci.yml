@@ -19,10 +19,15 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore
-        run: dotnet restore test1.sln
+        run: dotnet restore UniversityGrades.csproj
 
       - name: Build
-        run: dotnet build test1.sln --no-restore
+        run: dotnet build UniversityGrades.csproj --no-restore
 
       - name: Test
-        run: dotnet test test1.sln --no-build --verbosity normal || echo "No tests"
+        run: |
+          if find . -name "*Tests.csproj" | grep -q .; then
+            dotnet test --no-build --verbosity normal
+          else
+            echo "No se encontró proyecto de pruebas"
+          fi
